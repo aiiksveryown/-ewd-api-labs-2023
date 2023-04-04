@@ -9,6 +9,8 @@ const app = express();
 // eslint-disable-next-line no-undef
 const port = process.env.PORT;
 
+app.use(express.json());
+
 app.use('/api/movies', moviesRouter);
 
 app.listen(port, () => {
