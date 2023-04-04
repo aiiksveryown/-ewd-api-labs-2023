@@ -1,10 +1,11 @@
 // Load the http module to create an http server.
 import http from 'http';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 
-dotenv.config()
+dotenv.config();
 
-const port = process.env.PORT
+// eslint-disable-next-line no-undef
+const port = process.env.PORT;
 // Configure our HTTP server to respond with Hello World to all requests.
 const server = http.createServer((req, res) => {
   res.writeHead(200, {'Content-Type': 'text/plain'});
