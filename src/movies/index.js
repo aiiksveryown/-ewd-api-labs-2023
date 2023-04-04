@@ -3,6 +3,7 @@ import {movies, movieReviews, movieDetails} from './moviesData';
 import uniqid from 'uniqid'
 
 const router = express.Router(); 
+
 router.get('/', (req, res) => {
     res.json(movies);
 });
