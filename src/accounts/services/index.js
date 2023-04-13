@@ -13,5 +13,8 @@ export default {
   },
   findByEmail: (email, {accountsRepository})=>{
     return accountsRepository.getByEmail(email);
+  },
+  updateAccount: (id, firstName, lastName, email, password, {accountsRepository})=>{
+    return accountsRepository.merge(new Account(id, firstName, lastName, email, password));
   }
 };

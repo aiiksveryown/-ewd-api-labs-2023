@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import moviesRouter from './src/movies';
 import genresRouter from './src/genres';
 import createAccountsRouter from './src/accounts/routes';
 import buildDependencies from "./src/config/dependencies";
