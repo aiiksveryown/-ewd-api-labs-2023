@@ -24,6 +24,12 @@ const createRouter = (dependencies) => {
   router.route('/:id')
     .put(accountsController.updateAccount);
   
+  router.route('/:id/favourites')
+    .post(accountsController.addFavourite);
+  
+  router.route('/:id/favourites')
+    .get(accountsController.getFavourites);
+  
   return router;
 };
 export default createRouter;
