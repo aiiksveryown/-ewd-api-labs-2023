@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
+import db from './src/config/db';
 import genresRouter from './src/genres';
 import createAccountsRouter from './src/accounts/routes';
 import buildDependencies from "./src/config/dependencies";
@@ -7,9 +8,11 @@ import createMoviesRouter from './src/movies/routes';
 
 dotenv.config();
 
-const app = express();
-
 const dependencies = buildDependencies();
+
+db.init();
+
+const app = express();
 
 // eslint-disable-next-line no-undef
 const port = process.env.PORT;
