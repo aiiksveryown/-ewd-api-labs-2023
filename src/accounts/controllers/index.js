@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import accountService from "../services";
 
 export default (dependencies) => {
@@ -58,7 +59,6 @@ export default (dependencies) => {
       const favourites = await accountService.getFavourites(id, dependencies);
       response.status(200).json(favourites);
     } catch (err) {
-      console.log(err);
       next(new Error(`Invalid Data ${err.message}`));
     }
   };
