@@ -9,6 +9,9 @@ const createRouter = (dependencies) => {
   const accountsController = AccountsController(dependencies);
   const validationController = ValidationController(dependencies);
 
+  router.route('/security/token')
+    .post(accountsController.authenticateAccount);
+  
   router.route('/')
     .post(validationController.validateAccount, accountsController.createAccount);
   
