@@ -1,15 +1,17 @@
 import AccountsRepositoryInMemory from '../accounts/repositories/InMemoryRepository';
 import AccountsRepositoryMongo from '../accounts/repositories/MongoAccountRepository';
-import GenresRepositoryMongo from '../genres/repositories/MongoGenreRepository';
 import AccountSchema from '../accounts/validators';
-import Authenticator from '../accounts/security/simple';
+import Authenticator from '../accounts/security/BCryptAuthenticator';
 import AccountValidators from '../accounts/validators';
+import GenresRepositoryMongo from '../genres/repositories/MongoGenreRepository';
+import TokenManager from '../accounts/security/JWTToken';
 
 const buildDependencies = () => {
   const dependencies = {
     accountSchema: AccountSchema,
     validators: AccountValidators,
-    authenticator: new Authenticator()
+    authenticator: new Authenticator(),
+    tokenManager: new TokenManager()
   };
 
   if (process.env.DATABASE_DIALECT === "in-memory") {
