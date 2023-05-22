@@ -1,5 +1,5 @@
 export default
-(error, req, res) => {
+(error, req, res, next) => {
   if (!error.statusCode) error.statusCode = 500;
   
   if (error.statusCode === 301) {

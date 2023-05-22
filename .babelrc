@@ -1,3 +1,10 @@
 {
-  "presets": ["env"]
+  "presets": [
+    [
+      "env",
+      {
+        "targets":{"node":"18.0.0"}
+      }
+    ]
+  ]
 }

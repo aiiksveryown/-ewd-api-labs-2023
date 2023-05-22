@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --exec babel-node index.js",
-    "serve": "functions-framework --target=app"
+    "serve": "npm run build && cd ./build && functions-framework --target=default",
+
+    "prebuild": "node node_modules/rimraf/bin build",
+    "build": "npm run prebuild && babel . --out-dir build --copy-files --ignore node_modules,cloudbuild.yaml,README.md,_*",
+    "deploy": "gcloud builds submit --region=europe-west1 --config cloudbuild.yaml ./build"
   },
   "author": "aiiksveryown",
   "license": "ISC",

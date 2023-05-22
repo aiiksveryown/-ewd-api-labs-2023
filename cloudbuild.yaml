@@ -1,0 +1,20 @@
+steps:
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+  - gcloud
+  - functions
+  - deploy
+  - movies-api
+  - --region=europe-west1
+  - --source=.
+  - --trigger-http
+  - --runtime=nodejs18
+  - --entry-point=default
+  - --allow-unauthenticated
+  - --memory=128MB
+  - --timeout=15s
+  - --security-level=secure-always
+  - --set-secrets=TMDB_KEY=TMDB_KEY:latest,DATABASE_URL=DATABASE_URL:latest,JWT_SECRET_KEY=JWT_SECRET_KEY:latest
+  - --set-env-vars=NODE_ENV=prod,DATABASE_DIALECT=mongo,HOST=movies-api-db.c9ktjnr.mongodb.net
+options:
+  logging: CLOUD_LOGGING_ONLY

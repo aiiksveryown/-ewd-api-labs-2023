@@ -9,6 +9,7 @@ export default (dependencies) => {
       request.body = validated;
       next();
     } catch (err) {
+      console.log('err', err);
       next(new Error(`Invalid Data ${err.message}`));
     }
   };

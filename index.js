@@ -27,6 +27,12 @@ app.use('/api/accounts', createAccountsRouter(dependencies));
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.info(`Server running at ${port}`);
-});
+switch (process.env.NODE_ENV) {
+  case 'localhost':
+    app.listen(port, () => {
+      console.info(`Server running at ${port}`);
+    });
+    break;
+}
+
+export default app;
