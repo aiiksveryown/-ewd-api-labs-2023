@@ -10,7 +10,7 @@ const createRouter = (dependencies) => {
   const validationController = ValidationController(dependencies);
 
   router.route('/security/token')
-    .post(accountsController.authenticateAccount);
+    .post(validationController.validateLogin, accountsController.authenticateAccount);
   
   router.route('/security/verify')
     .post(accountsController.verify);
@@ -25,13 +25,13 @@ const createRouter = (dependencies) => {
     .get(accountsController.getAccount);
   
   router.route('/search')
-    .post(accountsController.findAccountByEmail);
+    .post(validationController.validateSearch, accountsController.findAccountByEmail);
   
   router.route('/:id')
     .put(accountsController.updateAccount);
   
   router.route('/:id/favourites')
-    .post(accountsController.addFavourite);
+    .post(validationController.validateMovie, accountsController.addFavourite);
   
   router.route('/:id/favourites')
     .get(accountsController.getFavourites);
@@ -40,7 +40,7 @@ const createRouter = (dependencies) => {
     .delete(accountsController.removeFavourite);
   
   router.route('/:id/playlist')
-    .post(accountsController.addMovieToPlaylist);
+    .post(validationController.validateMovie, accountsController.addMovieToPlaylist);
   
   router.route('/:id/playlist')
     .get(accountsController.getUserPlaylist);

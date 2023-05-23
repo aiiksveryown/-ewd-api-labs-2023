@@ -15,4 +15,22 @@ const accountSchema = Joi.object({
   lastName: Joi.string().min(1).max(30).required(),
 });
 
-export default {account: accountSchema};
+const loginSchema = Joi.object({
+  email: Joi.string().email().lowercase().required(),
+  password: Joi.string().required(),
+});
+
+const movieSchema = Joi.object({
+  movieId: Joi.number().required(),
+});
+
+const searchSchema = Joi.object({
+  email: Joi.string().email().lowercase().required(),
+});
+
+export default {
+  account: accountSchema,
+  login: loginSchema,
+  movie: movieSchema,
+  search: searchSchema,
+};
