@@ -4,48 +4,42 @@ import accountService from "../services";
 export default (dependencies) => {
   
   const createAccount = async (request, response, next) => {
-    // Input
     const { firstName, lastName, email, password } = request.body;
-    // Treatment
     const account = await accountService.registerAccount(firstName, lastName, email, password, dependencies);
-    //output
     response.status(201).json(account);
   };
+  const findAccountByEmail = async (request, response, next) => {
+    const { email } = request.body;
+    const account = await accountService.findByEmail(email, dependencies);
+    response.status(200).json(account);
+  };
   const getAccount = async (request, response, next) => {
-    //input
     const accountId = request.params.id;
-    // Treatment
     const account = await accountService.getAccount(accountId, dependencies);
-    //output
     response.status(200).json(account);
   };
   const listAccounts = async (request, response, next) => {
-    // Treatment
     const accounts = await accountService.find(dependencies);
-    //output
     response.status(200).json(accounts);
   };
   const updateAccount = async (request, response, next) => {
-    //input
     const accountId = request.params.id;
     const { firstName, lastName, email, password } = request.body;
-    // Treatment
     const account = await accountService.updateAccount(accountId, firstName, lastName, email, password, dependencies);
-    //output
     response.status(200).json(account);
   };
   const authenticateAccount = async (request, response, next) => {
     try {
       const { email, password } = request.body;
-      const token = await accountService.authenticate(email, password, dependencies);
-      response.status(200).json({ token: `BEARER ${token}` });
+      const {token, id} = await accountService.authenticate(email, password, dependencies);
+      response.status(200).json({ token: `BEARER ${token}`, id });
     } catch (error) {
       response.status(401).json({ message: 'Unauthorised' });
     }
   };
   const addFavourite = async (request, response, next) => {
     try {
-      const { movieId } = request.body;
+      const movieId = request.body.movieId;
       const id = request.params.id;
       const account = await accountService.addFavourite(id, movieId, dependencies);
       response.status(200).json(account);
@@ -62,20 +56,27 @@ export default (dependencies) => {
       next(new Error(`Invalid Data ${err.message}`));
     }
   };
+  const removeFavourite = async (request, response, next) => {
+    try {
+      const movieId = Number(request.params.movieId)
+      const id = request.params.id;
+      const account = await accountService.removeFavourite(id, movieId, dependencies);
+      response.status(200).json(account);
+    } catch (err) {
+      if (err.message === `Movie with ID ${movieId} is not in favourites`) {
+        response.status(404).json({ message: err.message });
+      }
+      else next(new Error(`Invalid Data ${err.message}`));
+    }
+  };
   const verify = async (request, response, next) => {
     try { 
-    // Input
     const authHeader = request.headers.authorization;
-
-    // Treatment
-
     const accessToken = authHeader.split(" ")[1];
     const user = await accountService.verifyToken(accessToken, dependencies);
 
-    //output
     next();
   } catch(err) {
-      //Token Verification Failed
       next(new Error(`Verification Failed ${err.message}`));
       }
   };
@@ -83,11 +84,13 @@ export default (dependencies) => {
   return {
     createAccount,
     getAccount,
+    findAccountByEmail,
     listAccounts,
     updateAccount,
     authenticateAccount,
     addFavourite,
     getFavourites,
+    removeFavourite,
     verify
   };
 };

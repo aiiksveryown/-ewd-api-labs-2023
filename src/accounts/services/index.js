@@ -26,7 +26,7 @@ export default {
       throw new Error('Bad credentials');
     }
     const token = tokenManager.generate({ email: account.email });
-    return token;
+    return {token, id: account.id};
   },
   getFavourites: async (accountId, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
@@ -41,6 +41,17 @@ export default {
     }
     
     account.favourites.push(movieId);
+    return await accountsRepository.merge(account);
+  },
+  removeFavourite: async (accountId, movieId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+
+    // check if movie is already in favourites array
+    if (!account.favourites.includes(movieId)) {
+      throw new Error(`Movie with ID ${movieId} is not in favourites`);
+    }
+
+    account.favourites = account.favourites.filter(favourite => favourite !== movieId);
     return await accountsRepository.merge(account);
   },
   verifyToken:   async (token,{accountsRepository, tokenManager}) => {

@@ -24,10 +24,37 @@ export default (dependencies) => {
     //output
     response.status(200).json(movies);
   };
+  const getMovieRecommendations = async (request, response, next) => {
+    //input
+    const movieId = request.params.id;
+    // Treatment
+    const movies = await moviesService.getMovieRecommendations(movieId, dependencies);
+    //output
+    response.status(200).json(movies);
+  };
+  const getMovieImages = async (request, response, next) => {
+    //input
+    const movieId = request.params.id;
+    // Treatment
+    const movies = await moviesService.getMovieImages(movieId, dependencies);
+    //output
+    response.status(200).json(movies);
+  };
+  const getMovieReviews = async (request, response, next) => {
+    //input
+    const movieId = request.params.id;
+    // Treatment
+    const movies = await moviesService.getMovieReviews(movieId, dependencies);
+    //output
+    response.status(200).json(movies);
+  };
   
   return {
     getMovie,
     find,
-    getUpcomingMovies 
+    getUpcomingMovies,
+    getMovieRecommendations,
+    getMovieImages,
+    getMovieReviews
   };
 };

@@ -21,6 +21,9 @@ const createRouter = (dependencies) => {
   router.route('/:id')
     .get(accountsController.getAccount);
   
+  router.route('/search')
+    .post(accountsController.findAccountByEmail);
+  
   router.route('/:id')
     .put(accountsController.updateAccount);
   
@@ -29,6 +32,9 @@ const createRouter = (dependencies) => {
   
   router.route('/:id/favourites')
     .get(accountsController.getFavourites);
+  
+  router.route('/:id/favourites/:movieId')
+    .delete(accountsController.removeFavourite);
   
   return router;
 };
