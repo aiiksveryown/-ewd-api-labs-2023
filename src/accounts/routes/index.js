@@ -36,6 +36,15 @@ const createRouter = (dependencies) => {
   router.route('/:id/favourites/:movieId')
     .delete(accountsController.removeFavourite);
   
+  router.route('/:id/playlist')
+    .post(accountsController.addMovieToPlaylist);
+  
+  router.route('/:id/playlist')
+    .get(accountsController.getUserPlaylist);
+  
+  router.route('/:id/playlist/:movieId')
+    .delete(accountsController.removeMovieFromPlaylist);
+  
   return router;
 };
 export default createRouter;

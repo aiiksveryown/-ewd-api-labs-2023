@@ -11,7 +11,8 @@ export default class extends AccountRepository {
       lastName: String,
       email: {type: String, unique: true, index: true},
       password: String,
-      favourites: [Number]
+      favourites: [Number],
+      playlist: [Number]
     });
     this.model = mongoose.model('Account', accountsSchema);
   }
@@ -25,9 +26,9 @@ export default class extends AccountRepository {
   }
   
   async merge(accountEntity) {
-    const {id, firstName, lastName, email, password, favourites } = accountEntity;
-    await this.model.findByIdAndUpdate(id, { firstName, lastName, email, password, favourites });
-    console.log({id, firstName, lastName, email, password, favourites });
+    const {id, firstName, lastName, email, password, favourites, playlist } = accountEntity;
+    await this.model.findByIdAndUpdate(id, { firstName, lastName, email, password, favourites, playlist });
+    console.log({id, firstName, lastName, email, password, favourites, playlist });
     return accountEntity;
   }
   
@@ -37,19 +38,19 @@ export default class extends AccountRepository {
   
   async get(userId) {
     const result = await this.model.findById(userId);
-    const {id, firstName, lastName, email, password, favourites } = result;
-    return new Account(id, firstName, lastName, email, password, favourites );
+    const {id, firstName, lastName, email, password, favourites, playlist } = result;
+    return new Account(id, firstName, lastName, email, password, favourites, playlist );
   }
   
   async getByEmail(userEmail) {
     const result = await this.model.findOne({email: userEmail});
-    return new Account(result.id, result.firstName, result.lastName, result.email, result.password,result.favourites);
+    return new Account(result.id, result.firstName, result.lastName, result.email, result.password,result.favourites, result.playlist);
   }
   
   async find() {
     const accounts = await this.model.find();
     return accounts.map((result) => {
-      return new Account(result.id, result.firstName, result.lastName, result.email, result.password, result.favourites);
+      return new Account(result.id, result.firstName, result.lastName, result.email, result.password, result.favourites, result.playlist);
     });
   }
 }

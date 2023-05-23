@@ -69,6 +69,39 @@ export default (dependencies) => {
       else next(new Error(`Invalid Data ${err.message}`));
     }
   };
+  const getUserPlaylist = async (request, response, next) => {
+    try {
+      const id = request.params.id;
+      const playlist = await accountService.getUserPlaylist(id, dependencies);
+      response.status(200).json(playlist);
+    } catch (err) {
+      next(new Error(`Invalid Data ${err.message}`));
+    }
+  };
+  const addMovieToPlaylist = async (request, response, next) => {
+    try {
+      const movieId = request.body.movieId;
+      const id = request.params.id;
+      const account = await accountService.addMovieToPlaylist(id, movieId, dependencies);
+      console.log("addMovieToPlaylist", request.body.movieId, account)
+      response.status(200).json(account);
+    } catch (err) {
+      next(new Error(`Invalid Data ${err.message}`));
+    }
+  };
+  const removeMovieFromPlaylist = async (request, response, next) => {
+    try {
+      const movieId = Number(request.params.movieId)
+      const id = request.params.id;
+      const account = await accountService.removeMovieFromPlaylist(id, movieId, dependencies);
+      response.status(200).json(account);
+    } catch (err) {
+      if (err.message === `Movie with ID ${movieId} is not in playlist`) {
+        response.status(404).json({ message: err.message });
+      }
+      else next(new Error(`Invalid Data ${err.message}`));
+    }
+  };
   const verify = async (request, response, next) => {
     try { 
     const authHeader = request.headers.authorization;
@@ -91,6 +124,9 @@ export default (dependencies) => {
     addFavourite,
     getFavourites,
     removeFavourite,
+    getUserPlaylist,
+    addMovieToPlaylist,
+    removeMovieFromPlaylist,
     verify
   };
 };

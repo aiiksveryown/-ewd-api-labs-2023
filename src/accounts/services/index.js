@@ -54,6 +54,32 @@ export default {
     account.favourites = account.favourites.filter(favourite => favourite !== movieId);
     return await accountsRepository.merge(account);
   },
+  getUserPlaylist: async (accountId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    return account.playlist;
+  },
+  addMovieToPlaylist: async (accountId, movieId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+    
+    // check if movie is already in playlist array
+    if (account.playlist.includes(movieId)) {
+      throw new Error(`Movie with ID ${movieId} is already in playlist`);
+    }
+    
+    account.playlist.push(movieId);
+    return await accountsRepository.merge(account);
+  },
+  removeMovieFromPlaylist: async (accountId, movieId, { accountsRepository }) => {
+    const account = await accountsRepository.get(accountId);
+
+    // check if movie is already in playlist array
+    if (!account.playlist.includes(movieId)) {
+      throw new Error(`Movie with ID ${movieId} is not in playlist`);
+    }
+
+    account.playlist = account.playlist.filter(favourite => favourite !== movieId);
+    return await accountsRepository.merge(account);
+  },
   verifyToken:   async (token,{accountsRepository, tokenManager}) => {
     const decoded = await tokenManager.decode(token);
     const user = await accountsRepository.getByEmail(decoded.email);
