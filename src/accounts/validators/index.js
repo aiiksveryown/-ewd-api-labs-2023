@@ -28,9 +28,14 @@ const searchSchema = Joi.object({
   email: Joi.string().email().lowercase().required(),
 });
 
+const tokenSchema = Joi.object({
+  token: Joi.string().required(),
+});
+
 export default {
   account: accountSchema,
   login: loginSchema,
   movie: movieSchema,
   search: searchSchema,
+  token: tokenSchema,
 };
